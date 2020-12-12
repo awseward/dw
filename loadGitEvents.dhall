@@ -1,9 +1,9 @@
-λ(sqliteFilepath : Text) →
-λ(pgTarget : Text) →
+λ(sqliteFile : Text) →
+λ(pgUri : Text) →
   ''
   LOAD database
-  FROM '${sqliteFilepath}'
-  INTO ${pgTarget}
+  FROM '${sqliteFile}'
+  INTO ${pgUri}
 
   WITH data only
 

@@ -1,8 +1,2 @@
-# SQLite
-*.db
-
 # Mac Finder junk
 .DS_STORE
-
-# direnv (kind of)
-.envrc.local
