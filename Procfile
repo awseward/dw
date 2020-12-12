@@ -1,2 +1,2 @@
-web:     PATH="${PATH}:/app/bin" ./server.sh $PORT
-release: PATH="${PATH}:/app/bin" ./scripts/heroku_release.sh
+web:     ./hk_web.sh
+release: ./hk_release.sh

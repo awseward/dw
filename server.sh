@@ -48,7 +48,7 @@ while true; do
         echo "${path} -- sj_path=${sj_path} store=${store}"
 
         echo "${sj_path}" \
-          | xargs -t ./pull.sh \
+          | xargs -t ./sj_pull.sh \
           | xargs -t "${pg_load_script}"
         ;;
 
