@@ -5,7 +5,6 @@ set -euo pipefail
 readonly sqlite_file="$1"
 readonly store="$2"
 readonly dw_db_name='warehouse'
-readonly pgload_file="$(mktemp -t 'pgload_XXXXXXXX.sql')"
 readonly pg_uri="${DATABASE_URL:-"postgresql:///${dw_db_name}"}"
 
 readonly pgload_file_content="$(
@@ -15,6 +14,10 @@ readonly pgload_file_content="$(
     in ./pgLoad.dhall "${sqlite_file}" "${pg_uri}" afterLoad
 DH
 )"
+
+[ "${pgload_file_content}" == '' ] && exit 1
+
+readonly pgload_file="$(mktemp -t "pgload_${store}_XXXXXXXX.sql")"
 
 echo "${pgload_file_content}" > "${pgload_file}"
 echo "${pgload_file}"

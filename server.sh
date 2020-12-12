@@ -10,8 +10,6 @@ readonly access_name="${access_name,,}"
 uplink import "${access_name}" "${SJ_ACCESS}"
 export SJ_ACCESS="${access_name}"
 
-# echo "${SJ_ACCESS}" | xargs -t uplink ls "sj://${SJ_BUCKET}" --access
-
 while true; do
   ( set -euo pipefail
 
@@ -25,25 +23,11 @@ while true; do
       '/favicon.ico') : ;;
 
       '/sqlite')
+        # shellcheck disable=SC2001
         store="$(echo "${request_url}" | sed -e 's/^.*store=\([^& ]*\).*$/\1/')"
         readonly store="${store,,}"
 
-        # case "${store}" in
-        #   'git-events')
-        #     readonly pg_load_script='./pg_load_git_events.sh'
-        #     ;;
-
-        #   'health-events')
-        #     readonly pg_load_script='./pg_load_health_events.sh'
-        #     ;;
-
-        #   'call-events')
-        #     readonly pg_load_script='./pg_load_call_events.sh'
-        #     ;;
-
-        #   *) >&2 echo "[ERR] Rejected: ${path} -- store=${store}"; exit 1
-        # esac
-
+        # shellcheck disable=SC2001
         readonly sj_path="$(echo "${request_url}" | sed -e 's/^.*sj_path=\([^& ]*\).*$/\1/')"
         echo "${path} -- sj_path=${sj_path} store=${store}"
 
