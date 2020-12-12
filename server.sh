@@ -28,28 +28,28 @@ while true; do
         store="$(echo "${request_url}" | sed -e 's/^.*store=\([^& ]*\).*$/\1/')"
         readonly store="${store,,}"
 
-        case "${store}" in
-          'git-events')
-            readonly pg_load_script='./pg_load_git_events.sh'
-            ;;
+        # case "${store}" in
+        #   'git-events')
+        #     readonly pg_load_script='./pg_load_git_events.sh'
+        #     ;;
 
-          'health-events')
-            readonly pg_load_script='./pg_load_health_events.sh'
-            ;;
+        #   'health-events')
+        #     readonly pg_load_script='./pg_load_health_events.sh'
+        #     ;;
 
-          'call-events')
-            readonly pg_load_script='./pg_load_call_events.sh'
-            ;;
+        #   'call-events')
+        #     readonly pg_load_script='./pg_load_call_events.sh'
+        #     ;;
 
-          *) >&2 echo "[ERR] Rejected: ${path} -- store=${store}"; exit 1
-        esac
+        #   *) >&2 echo "[ERR] Rejected: ${path} -- store=${store}"; exit 1
+        # esac
 
         readonly sj_path="$(echo "${request_url}" | sed -e 's/^.*sj_path=\([^& ]*\).*$/\1/')"
         echo "${path} -- sj_path=${sj_path} store=${store}"
 
         echo "${sj_path}" \
           | xargs -t ./sj_pull.sh \
-          | xargs -t "${pg_load_script}"
+          | xargs -t -I{} ./pg_load.sh {} "${store}"
         ;;
 
       (*) >&2 echo "[ERR] Rejected: ${path}"
