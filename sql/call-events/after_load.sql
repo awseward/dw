@@ -1,2 +1,1 @@
--- Fail intentionally until implemented
-TODO;
+$$ SELECT 'Nothing to do here...'; $$
