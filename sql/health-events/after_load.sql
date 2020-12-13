@@ -1,1 +1,1 @@
-$$ /* Nothing to do here... */ $$
+$$ SELECT 'Nothing to do here...'; $$
