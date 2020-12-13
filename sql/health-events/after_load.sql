@@ -1,2 +1,1 @@
--- Fail intentionally until implemented
-TODO;
+$$ /* Nothing to do here... */ $$
