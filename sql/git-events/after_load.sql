@@ -1,9 +1,12 @@
 $$ BEGIN TRANSACTION; $$,
-  $$ CREATE TEMP TABLE events_deduped AS SELECT DISTINCT * FROM events; $$,
-  $$ TRUNCATE TABLE events; $$,
-  $$ INSERT INTO events SELECT * FROM events_deduped; $$,
-  $$ DROP TABLE events_deduped; $$,
+--
+$$   CREATE TEMP TABLE _deduped AS SELECT DISTINCT * FROM events; $$,
+$$   TRUNCATE TABLE events; $$,
+$$   INSERT INTO events SELECT * FROM _deduped; $$,
+$$   DROP TABLE _deduped; $$,
+--
 $$ COMMIT; $$,
+
 $$
   INSERT INTO dim_ref (ref)
     SELECT DISTINCT tbl.ref
@@ -12,6 +15,7 @@ $$
     WHERE dim.ref IS NULL
     ;
 $$,
+
 $$
   INSERT INTO dim_repo (repo)
     SELECT DISTINCT tbl.repo
@@ -20,6 +24,7 @@ $$
     WHERE dim.repo IS NULL
     ;
 $$,
+
 $$
   INSERT INTO dim_hook (hook)
     SELECT DISTINCT tbl.hook
