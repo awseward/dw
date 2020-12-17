@@ -26,7 +26,7 @@ _sep
 
 ### Install dhall
 
-readonly dhall_ver='1.37.0'
+readonly dhall_ver='1.37.1'
 readonly dhall_tar="dhall-${dhall_ver}-x86_64-linux.tar.bz2"
 
 wget "https://github.com/dhall-lang/dhall-haskell/releases/download/${dhall_ver}/${dhall_tar}" \
