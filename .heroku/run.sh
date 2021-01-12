@@ -51,13 +51,12 @@ cp ./shmig/shmig ./bin/
 
 _sep
 
-### Install heroku_database_url_splitter
+### Install uq
 
-readonly hdus='heroku_database_url_splitter'
-readonly hdus_ver='0.0.1'
-readonly hdus_tar="${hdus}-${hdus_ver}.tar.gz"
+readonly uq_ver='0.1.2'
+readonly uq_tar="uq-${uq_ver}-Linux.tar.gz"
 
-wget "https://github.com/awseward/${hdus}/releases/download/${hdus_ver}/${hdus_tar}" \
-  && tar -zxvf "./${hdus_tar}" \
-  && mv "./${hdus}" ./bin/ \
-  && rm -rf "${hdus_tar}"
+wget "https://github.com/awseward/uq/releases/download/${uq_ver}/${uq_tar}" \
+  && tar -zxvf "./${uq_tar}" \
+  && mv "./uq" ./bin/ \
+  && rm -rf "${uq_tar}"
