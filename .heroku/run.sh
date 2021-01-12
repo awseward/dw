@@ -53,8 +53,8 @@ _sep
 
 ### Install uq
 
-readonly uq_ver='0.1.2'
-readonly uq_tar="uq-${uq_ver}-Linux.tar.gz"
+readonly uq_ver='0.1.4'
+readonly uq_tar="uq-${uq_ver}-linux.tar.gz"
 
 wget "https://github.com/awseward/uq/releases/download/${uq_ver}/${uq_tar}" \
   && tar -zxvf "./${uq_tar}" \
