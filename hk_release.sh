@@ -4,4 +4,12 @@ set -euo pipefail
 
 export PATH="/app/bin:${PATH}"
 
-eval "$(heroku_database_url_splitter)" && echo up | xargs -t shmig
+readonly exports="$(
+  uq fmt-shell \
+    --keys-prefix=DATABASE \
+    --path-key=DATABASE_NAME \
+    --path-lstrip-slash \
+    "${DATABASE_URL}"
+)"
+
+eval "${exports}" && echo up | xargs -t shmig
