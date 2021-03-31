@@ -1,2 +1,5 @@
 # Mac Finder junk
 .DS_STORE
+
+# direnv
+.envrc
