@@ -22,4 +22,4 @@ readonly pgload_file="$(mktemp -t "pgload_${store}_XXXXXXXX.sql")"
 echo "${pgload_file_content}" > "${pgload_file}"
 echo "${pgload_file}"
 
-pgloader "${pgload_file}"
+pgloader --no-ssl-cert-verification "${pgload_file}"
