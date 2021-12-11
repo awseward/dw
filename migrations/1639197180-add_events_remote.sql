@@ -1,4 +1,4 @@
--- Migration: add_events_remote.sql
+-- Migration: add_events_remote
 -- Created at: 2021-12-10 20:33:00
 -- ====  UP  ====
 
