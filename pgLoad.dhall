@@ -4,7 +4,7 @@
   ''
   LOAD database
   FROM '${sqliteFile}'
-  INTO ${pgUri}
+  INTO ${pgUri}?sslmode=require
   WITH data only
   AFTER LOAD DO ${afterLoad}
   ;
