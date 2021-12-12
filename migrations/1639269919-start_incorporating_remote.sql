@@ -20,7 +20,6 @@ BEGIN;
     SELECT
       COUNT(*) AS event_count
     , v_r.remote
-    -- FIXME: This is not _quite_ right yet but is close enough for now…
     , ARRAY_AGG( DISTINCT v_r.local_path_normalized ) AS local_paths_normalized
     FROM fact_git_event f_ge
     JOIN v2.v_repo v_r ON f_ge.repo_key = v_r.repo_key
