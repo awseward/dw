@@ -19,15 +19,15 @@ listen() {
     '/favicon.ico') : ;;
 
     '/sqlite')
-      # shellcheck disable=SC2001
-      local store; store="$(echo "${request_url}" | sed -e 's/^.*store=\([^& ]*\).*$/\1/')"
+      local store; store="$(
+        # shellcheck disable=SC2001
+        echo "${request_url}" | sed -e 's/^.*store=\([^& ]*\).*$/\1/'
+      )"
       readonly store="${store,,}"
-      # shellcheck disable=SC2001
-      local sj_path; sj_path="$(
-        echo "${request_url}" | sed -e 's/^.*sj_path=\([^& ]*\).*$/\1/'
-      )" readonly sj_path
-      echo "${path} -- sj_path=${sj_path} store=${store}"
-      ./load.sh "${store}" <<< "${sj_path}"
+
+      echo "${request_url}" \
+        | sed -e 's/^.*sj_path=\([^& ]*\).*$/\1/' \
+        | ./load.sh "${store}"
       ;;
 
     (*) >&2 echo "[ERR] Rejected: ${path}"
