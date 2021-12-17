@@ -9,7 +9,11 @@ exec() {
   # shellcheck disable=SC2046
   read -r method url proto <<< $(head -n1 -)
 
-  "${handler}" run "${method}" "${url}" "${proto}" "$0 respond ${proto}"
+  # "${handler}" run "${method}" "${url}" "${proto}" "$0 respond ${proto}"
+  >&2 echo "${handler} run ${method} ${url} ${proto} '$0 respond ${proto}'"
+
+  respond "${proto}" '202 Accepted' \
+    "${handler} run ${method} ${url} ${proto} '$0 respond ${proto}'"
 }
 
 respond() {
