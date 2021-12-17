@@ -2,7 +2,7 @@
 
 # Adapted from https://github.com/benrady/shinatra
 
-readonly response="HTTP/1.1 202 Accepted\r\nConnection: keep-alive\r\n\r\n${2:-"Accepted"}\r\n"
+readonly response="HTTP/1.1 202 Accepted\r\nConnection: close\r\n\r\n${2:-"Accepted"}\r\n"
 
 access_name="$(mktemp -u -t sj-access-XXXXXXXXXXXXXXXX | xargs basename)"
 readonly access_name="${access_name,,}"
