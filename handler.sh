@@ -4,7 +4,9 @@ set -euo pipefail
 
 query_string_to_tsv() {
   # This is a little out there and probably wildly inefficient, but it works…
-  gxargs -d '&' -n1 | tr '=' $'\t'
+
+  # gxargs -d '&' -n1 | tr '=' $'\t'
+     xargs -d '&' -n1 | tr '=' $'\t'
 }
 
 query_tsv_includes() {
@@ -26,7 +28,12 @@ run() {
 
   local -r path="${url%%\?*}"
 
-  # TODO: Check path
+  # TODO: Maybe some changes to this path check
+  if [ "${path}" != '/sqlite' ]; then
+    >&2 echo "[ERROR] Rejected path: ${path}"
+    $respond '404 Not Found'
+    return 1
+  fi
 
   local -r query_string="${url#*\?}"
 
@@ -54,8 +61,7 @@ run() {
   local -r sj_path="$(query_get sj_path)"
   local -r store="$(query_get store)"
 
-  body="TODO ${sj_path} ${store}"
-  >&2 echo "${body}"
+  local -r body="$(./load.sh "${store}" "${sj_path}")"
 
   $respond '202 Accepted' "${body}"
 }

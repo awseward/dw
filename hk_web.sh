@@ -4,4 +4,4 @@ set -euo pipefail
 
 export PATH="/app/bin:${PATH}"
 
-./server.sh "${PORT}"
+socat -v -v -d -d "TCP-LISTEN:${PORT}",reuseaddr,fork exec:'./http.sh exec ./handler.sh',pipes,crnl
