@@ -18,7 +18,7 @@ exec() {
   readonly full_request
   # === END https://stackoverflow.com/a/63057984 workaround ===
 
-  echo -e "HTTP/1.1 202 Accepted\nContent-Length: 0\nConnection: keep-alive"
+  echo -e "HTTP/1.1 202 Accepted\nContent-Length: 0"
   return 0
   # ---
 
