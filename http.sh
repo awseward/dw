@@ -4,12 +4,6 @@ set -euo pipefail
 
 # socat -v -v -d -d TCP-LISTEN:8080,reuseaddr,fork exec:'./http.sh exec ./handler.sh',pipes,crnl
 exec() {
-  echo -e "HTTP/1.1 202 Accepted\nContent-Length: 0\nConnection: keep-alive"
-  return 0
-  # ---
-
-  local -r handler="$1"
-
   # === BEGIN https://stackoverflow.com/a/63057984 workaround ===
   local full_request
   while read -r line; do
@@ -23,6 +17,12 @@ exec() {
   done
   readonly full_request
   # === END https://stackoverflow.com/a/63057984 workaround ===
+
+  echo -e "HTTP/1.1 202 Accepted\nContent-Length: 0\nConnection: keep-alive"
+  return 0
+  # ---
+
+  local -r handler="$1"
 
   # shellcheck disable=SC2046
   read -r method url proto <<< $(head -n1 <<< "${full_request}")
