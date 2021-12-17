@@ -2,33 +2,37 @@
 
 # Adapted from https://github.com/benrady/shinatra
 
+set -euo pipefail
+
 readonly response="HTTP/1.1 202 Accepted\r\nConnection: close\r\n\r\n${2:-"Accepted"}\r\n"
 
-while true; do
-  ( set -euo pipefail
+listen() {
+  local -r request="$(echo -en "$response" | nc -l "${1:-8080}" -w 1)"
+  local -r request_url="$(echo "${request}" | head -n1 | grep -o ' .* ')"
 
-    readonly request="$(echo -en "$response" | nc -l "${1:-8080}" -w 1)"
-    readonly request_url="$(echo "${request}" | head -n1 | grep -o ' .* ')"
+  local path; path="$(echo "${request_url}" | sed -e 's/^.* \(\/[^? ]*\)[? ].*$/\1/')"
+  readonly path="${path,,}"
 
-    path="$(echo "${request_url}" | sed -e 's/^.* \(\/[^? ]*\)[? ].*$/\1/')"
-    readonly path="${path,,}"
+  case "${path}" in
+    '/favicon.ico') : ;;
 
-    case "${path}" in
-      '/favicon.ico') : ;;
+    '/sqlite')
+      # shellcheck disable=SC2001
+      local store; store="$(echo "${request_url}" | sed -e 's/^.*store=\([^& ]*\).*$/\1/')"
+      readonly store="${store,,}"
+      # shellcheck disable=SC2001
+      readonly sj_path; sj_path="$(
+        echo "${request_url}" | sed -e 's/^.*sj_path=\([^& ]*\).*$/\1/'
+      )"
+      echo "${path} -- sj_path=${sj_path} store=${store}"
+      ./load.sh "${store}" "${sj_path}"
+      ;;
 
-      '/sqlite')
-        # shellcheck disable=SC2001
-        store="$(echo "${request_url}" | sed -e 's/^.*store=\([^& ]*\).*$/\1/')"
-        readonly store="${store,,}"
-        # shellcheck disable=SC2001
-        readonly sj_path="$(
-          echo "${request_url}" | sed -e 's/^.*sj_path=\([^& ]*\).*$/\1/'
-        )"
-        echo "${path} -- sj_path=${sj_path} store=${store}"
-        ./load.sh "${store}" "${sj_path}"
-        ;;
+    (*) >&2 echo "[ERR] Rejected: ${path}"
+  esac
+}
 
-      (*) >&2 echo "[ERR] Rejected: ${path}"
-    esac
-  )
+while true
+do
+  "$0" listen || (>&2 echo "ERROR…"; sleep 1)
 done
