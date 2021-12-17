@@ -8,7 +8,7 @@ exec() {
   local full_request
   while read -r line; do
     >&2 echo ">>>>>>>>>> ${line}"
-    grep -e '^[A-Za-z]' <<< "${line}" >/dev/null || break;
+    # grep -e '^[A-Za-z]' <<< "${line}" >/dev/null || break;
 
     if [ "${full_request:-}" = '' ]; then
       full_request="${line}"
