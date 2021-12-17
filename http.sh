@@ -6,7 +6,7 @@ set -euo pipefail
 exec() {
   # === BEGIN https://stackoverflow.com/a/63057984 workaround ===
   local full_request
-  while read -r line; do
+  while read -rt1 line; do
     >&2 echo ">>>>>>>>>> ${line}"
     # grep -e '^[A-Za-z]' <<< "${line}" >/dev/null || break;
 
