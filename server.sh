@@ -34,5 +34,6 @@ listen() {
 
 while true
 do
-  "$0" listen || (>&2 echo "ERROR…"; sleep 1)
+  >&2 echo "$0 listen $*"
+  "$0" listen "$@" || (>&2 echo "ERROR…"; sleep 1)
 done
