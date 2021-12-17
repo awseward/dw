@@ -8,6 +8,7 @@ listen() {
   local -r response="HTTP/1.1 202 Accepted\r\nConnection: close\r\n\r\n${2:-"Accepted"}\r\n"
 
   local -r request="$(echo -en "$response" | nc -l "${1:-8080}" -w 1)"
+  >&2 echo ">>>>> ${request}"
   local -r request_url="$(echo "${request}" | head -n1 | grep -o ' .* ')"
 
   local path; path="$(echo "${request_url}" | sed -e 's/^.* \(\/[^? ]*\)[? ].*$/\1/')"
