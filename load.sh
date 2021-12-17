@@ -11,11 +11,7 @@ export SJ_ACCESS="${access_name}"
 
 run() {
   local -r store="$1"
-  local -r sj_path="$2"
-
-  echo "${sj_path}" \
-    | xargs -t ./sj_pull.sh \
-    | xargs -t ./pg_load.sh "${store}"
+  ./sj_pull.sh | ./pg_load.sh "${store}"
 }
 
 run "$@"
