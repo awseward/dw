@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-url="$(cat)"; readonly url
+url="$(cat -)"; readonly url
 sqlite_filepath="$(mktemp -t pulled_sqlite-XXXXXXXX.db)"; readonly sqlite_filepath
 readonly sj_access="${SJ_ACCESS:-dw-read}"
 

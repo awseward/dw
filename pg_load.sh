@@ -3,7 +3,7 @@
 set -euo pipefail
 
 readonly store="$1"
-sqlite_file="$(cat)"; readonly sqlite_file
+sqlite_file="$(cat -)"; readonly sqlite_file
 readonly dw_db_name='warehouse'
 readonly pg_uri="${DATABASE_URL:-"postgresql:///${dw_db_name}"}"
 
