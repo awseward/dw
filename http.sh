@@ -10,8 +10,10 @@ exec() {
 
   local -r handler="$1"
 
+  local -r full_request="$(cat -)"
+
   # shellcheck disable=SC2046
-  read -r method url proto <<< $(head -n1 -)
+  read -r method url proto <<< $(head -n1 <<< "${full_request}")
 
   # "${handler}" run "${method}" "${url}" "${proto}" "$0 respond ${proto}"
   >&2 echo "${handler} run ${method} ${url} ${proto} '$0 respond ${proto}'"
