@@ -27,7 +27,7 @@ listen() {
         echo "${request_url}" | sed -e 's/^.*sj_path=\([^& ]*\).*$/\1/'
       )" readonly sj_path
       echo "${path} -- sj_path=${sj_path} store=${store}"
-      ./load.sh "${store}" "${sj_path}"
+      ./load.sh "${store}" <<< "${sj_path}"
       ;;
 
     (*) >&2 echo "[ERR] Rejected: ${path}"
