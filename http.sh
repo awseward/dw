@@ -4,7 +4,7 @@ set -euo pipefail
 
 # socat -v -v -d -d TCP-LISTEN:8080,reuseaddr,fork exec:'./http.sh exec ./handler.sh',pipes,crnl
 exec() {
-  echo -e "HTTP/1.1 202 Accepted\nContent-Length: 0"
+  echo -e "HTTP/1.1 202 Accepted\nContent-Length: 0\nConnection: keep-alive"
   return 0
   # ---
 
