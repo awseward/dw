@@ -21,9 +21,9 @@ listen() {
       local store; store="$(echo "${request_url}" | sed -e 's/^.*store=\([^& ]*\).*$/\1/')"
       readonly store="${store,,}"
       # shellcheck disable=SC2001
-      readonly sj_path; sj_path="$(
+      local sj_path; sj_path="$(
         echo "${request_url}" | sed -e 's/^.*sj_path=\([^& ]*\).*$/\1/'
-      )"
+      )" readonly sj_path
       echo "${path} -- sj_path=${sj_path} store=${store}"
       ./load.sh "${store}" "${sj_path}"
       ;;
