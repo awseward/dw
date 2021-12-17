@@ -15,7 +15,7 @@ run() {
 
   echo "${sj_path}" \
     | xargs -t ./sj_pull.sh \
-    | xargs -t -I{} ./pg_load.sh {} "${store}"
+    | xargs -t ./pg_load.sh "${store}"
 }
 
 run "$@"

@@ -2,8 +2,8 @@
 
 set -euo pipefail
 
-readonly sqlite_file="$1"
-readonly store="$2"
+readonly store="$1"
+readonly sqlite_file="$2"
 readonly dw_db_name='warehouse'
 readonly pg_uri="${DATABASE_URL:-"postgresql:///${dw_db_name}"}"
 
