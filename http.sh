@@ -7,7 +7,7 @@ exec() {
   # === BEGIN https://stackoverflow.com/a/63057984 workaround ===
   local full_request
   while read -r line; do
-    [ "${line}" = '' ] && break;
+    grep -e '^[A-Za-z]' <<< "${line}" >/dev/null || break;
 
     if [ "${full_request:-}" = '' ]; then
       full_request="${line}"
