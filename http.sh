@@ -10,7 +10,19 @@ exec() {
 
   local -r handler="$1"
 
-  local -r full_request="$(cat -)"
+  # === BEGIN https://stackoverflow.com/a/63057984 workaround ===
+  local full_request
+  while read -r line; do
+    [ "${line}" = '' ] && break;
+
+    if [ "${full_request:-}" = '' ]; then
+      full_request="${line}"
+    else
+      full_request="${full_request}\n${line}"
+    fi
+  done
+  readonly full_request
+  # === END https://stackoverflow.com/a/63057984 workaround ===
 
   # shellcheck disable=SC2046
   read -r method url proto <<< $(head -n1 <<< "${full_request}")
