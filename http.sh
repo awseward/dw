@@ -4,6 +4,10 @@ set -euo pipefail
 
 # socat -v -v -d -d TCP-LISTEN:8080,reuseaddr,fork exec:'./http.sh exec ./handler.sh',pipes,crnl
 exec() {
+  echo -e "HTTP/1.1 202 Accepted\nConnection: close\n\nUhhhh"
+  return 0
+  # ---
+
   local -r handler="$1"
 
   # shellcheck disable=SC2046
