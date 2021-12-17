@@ -4,4 +4,4 @@ set -euo pipefail
 
 export PATH="/app/bin:${PATH}"
 
-./server.sh "${PORT}"
+./server.sh run "${PORT}"
