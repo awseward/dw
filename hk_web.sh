@@ -2,6 +2,6 @@
 
 set -euo pipefail
 
-export PATH="/app/bin:${PATH}"
+export PATH="${HOME}/bin:${PATH}"
 
-./server.sh "${PORT}"
+./server.sh run "${PORT}"
