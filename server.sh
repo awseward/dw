@@ -2,33 +2,49 @@
 
 # Adapted from https://github.com/benrady/shinatra
 
-readonly response="HTTP/1.1 202 Accepted\r\nConnection: close\r\n\r\n${2:-"Accepted"}\r\n"
+set -euo pipefail
 
-while true; do
-  ( set -euo pipefail
+listen() {
+  local -r listen_port="${1:-8080}"
+  >&2 echo "Listening on :${listen_port}"
+  local -r resp_file='./http202.txt'
+  nc -l "${listen_port}" < "${resp_file}"
+}
 
-    readonly request="$(echo -en "$response" | nc -l "${1:-8080}" -w 1)"
-    readonly request_url="$(echo "${request}" | head -n1 | grep -o ' .* ')"
+handle() {
+  local -r req="$(cat -)"
+  local -r request_url="$(echo "${req}" | head -n1 | grep -o ' .* ')"
+  local path; path="$(echo "${request_url}" | sed -e 's/^.* \(\/[^? ]*\)[? ].*$/\1/')"
+  readonly path="${path,,}"
 
-    path="$(echo "${request_url}" | sed -e 's/^.* \(\/[^? ]*\)[? ].*$/\1/')"
-    readonly path="${path,,}"
+  [ "${path}" = '' ] && return 1
 
-    case "${path}" in
-      '/favicon.ico') : ;;
-
-      '/sqlite')
+  case "${path}" in
+    '/sqlite')
+      local store; store="$(
         # shellcheck disable=SC2001
-        store="$(echo "${request_url}" | sed -e 's/^.*store=\([^& ]*\).*$/\1/')"
-        readonly store="${store,,}"
-        # shellcheck disable=SC2001
-        readonly sj_path="$(
-          echo "${request_url}" | sed -e 's/^.*sj_path=\([^& ]*\).*$/\1/'
-        )"
-        echo "${path} -- sj_path=${sj_path} store=${store}"
-        ./load.sh "${store}" "${sj_path}"
-        ;;
+        echo "${request_url}" | sed -e 's/^.*store=\([^& ]*\).*$/\1/'
+      )"
+      readonly store="${store,,}"
 
-      (*) >&2 echo "[ERR] Rejected: ${path}"
-    esac
-  )
-done
+      local -r load_script='./load.sh'
+
+      echo "${request_url}" \
+        | sed -e 's/^.*sj_path=\([^& ]*\).*$/\1/' \
+        | "${load_script}" pull_sj \
+        | "${load_script}" load_pg "${store}"
+      ;;
+
+    (*) >&2 echo "Discarded: ${path}"
+  esac
+}
+
+run() {
+  while true
+  do
+    listen "$@" | handle \
+      || (echo '…'; sleep '0.5')
+  done
+}
+
+"$@"
