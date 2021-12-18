@@ -6,6 +6,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: awseward/gh-actions-dhall@0.3.2
+        env:
+          AFTERLOAD: '"-- dummy query"'
+          PG_URI: 'postgresql://dummy'
+          SQLITE_FILE: './dummy.db'
 
   shell:
     runs-on: ubuntu-latest

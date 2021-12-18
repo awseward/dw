@@ -48,8 +48,8 @@ load_pg() {
   local -r pgload_file="$(mktemp -t "XXXXXXXX.sql")"
 
   AFTERLOAD="./sql/${store}/after_load.sql as Text" \
-    SQLITE_FILE="${sqlite_file}" \
-    PG_URI="${pg_uri}" \
+  SQLITE_FILE="${sqlite_file}"                      \
+  PG_URI="${pg_uri}"                                \
     dhall text  --file './pgLoad.dhall' --output "${pgload_file}"
 
   xargs -t pgloader --no-ssl-cert-verification <<< "${pgload_file}"
